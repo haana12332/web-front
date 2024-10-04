@@ -1,0 +1,10 @@
+services:
+  my-react-app:
+    build:
+      context: .
+    working_dir: /app
+    ports:
+      - "4500:4500"
+    volumes:
+      - ./my-react-app:/app # ここがリスト形式
+    command: npm run dev
