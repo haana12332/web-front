@@ -1,9 +1,14 @@
-import "./App.css";
+import { RouterProvider } from "react-router-dom";
+import { Suspense } from "react";
+import { Loading } from "@/components/loading";
+import { router } from "@/routes";
 
 function App() {
   return (
     <>
-      <div>hello12123dfghgfdsdfghj</div>
+      <Suspense fallback={<Loading />}>
+        <RouterProvider router={router} />
+      </Suspense>
     </>
   );
 }

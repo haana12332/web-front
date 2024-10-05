@@ -1,4 +1,5 @@
 {
+  "extends": "./tsconfig.json",
   "compilerOptions": {
     "target": "ES2020",
     "useDefineForClassFields": true,
@@ -14,11 +15,17 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
+    /* パスエイリアスの設定 */
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"] // パスエイリアスを設定
+    },
+
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"]
+  "include": ["src/**/*"]
 }
