@@ -19,3 +19,12 @@ docker-compose logs
 ```
 lsof -i :4500
 ```
+# 5 .デプロイする
+## 5.1 reactを本番環境用のファイルを作成
+```
+npm run build
+```
+## 5.2 デプロイする
+```
+firebase deploy
+```
