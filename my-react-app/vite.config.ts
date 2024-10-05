@@ -13,4 +13,7 @@ export default defineConfig({
       "@": resolve(__dirname, "./src"), // パスエイリアスを設定
     },
   },
+  build: {
+    outDir: "build", // 出力先ディレクトリを "build" に変更
+  },
 });

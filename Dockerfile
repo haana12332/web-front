@@ -9,3 +9,4 @@ COPY my-react-app /app/
 
 # 依存関係をインストール
 RUN npm install
+

@@ -5,25 +5,17 @@ import SearchIcon from "@mui/icons-material/Search";
 export const SidebarData = [
   {
     title: "",
-    icon: (
-      <MenuIcon style={{ fontSize: "4vw", color: "white", opacity: "0.7" }} />
-    ), // アイコンサイズを40pxに設定
+    icon: <MenuIcon className="sidebar-icon" />, // アイコンにカスタムクラスを適用
     link: "/menu",
   },
   {
     title: "トレンド",
-    icon: (
-      <SearchIcon style={{ fontSize: "4vw", color: "white", opacity: "0.7" }} />
-    ), // 同じく40pxに設定
+    icon: <SearchIcon className="sidebar-icon" />, // 同じく適用
     link: "/search",
   },
   {
     title: "ユーザー",
-    icon: (
-      <PermIdentityIcon
-        style={{ fontSize: "4vw", color: "white", opacity: "0.7" }}
-      />
-    ), // 同じく40pxに設定
+    icon: <PermIdentityIcon className="sidebar-icon" />, // 同じく適用
     link: "/user",
   },
 ];

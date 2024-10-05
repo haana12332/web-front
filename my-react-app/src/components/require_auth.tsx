@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom";
 import { SidebarData } from "./sidebarData";
-import { Button } from "@mui/material";
 export function RequireAuth(): JSX.Element {
   return (
     <div className="flex">
@@ -18,21 +17,16 @@ function Sildebar(): JSX.Element {
   }
 
   return (
-    <div id="Sidebar" className="w-1/15 bg-slate-800 h-screen">
-      {" "}
-      {/* 幅を25%に設定 */}
+    <div id="Sidebar">
       <ul>
         {SidebarData.map((value, key) => {
           return (
-            <li
-              className="pt-5  flex flex-col  items-center justify-center text-white/70 font-bold"
-              key={key}
-              onClick={handleSidebar}
-            >
-              <Button variant="contained" className="gb-red/0">
-                Text
-              </Button>
-              <p>{value.title}</p>
+            <li key={key} onClick={handleSidebar}>
+              {/* Use a custom button with a CSS class */}
+              <button className="btn sidebar">
+                <div>{value.icon}</div>
+                <p>{value.title}</p>
+              </button>
             </li>
           );
         })}
