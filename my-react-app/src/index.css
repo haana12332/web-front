@@ -1,5 +1,3 @@
-/* index.css */
-
 /* Reset some default browser styles */
 * {
   margin: 0;
@@ -23,8 +21,9 @@ body {
 /* Sidebar styles */
 #Sidebar {
   width: 6.67%; /* 1/15 width of screen */
-  background-color: #1e293b; /* slate-800 equivalent */
+  background-color: #d9d9d9; /* slate-800 equivalent */
   height: 100vh;
+  overflow: auto; /* Ensure content is scrollable if too long */
 }
 
 #Sidebar ul {
@@ -43,27 +42,57 @@ body {
   width: 100%;
   background-color: transparent;
   border: none;
-  font-size: 4vw;
+  font-size: 3.5vw; /* Adjusted for better scaling */
   font-weight: bold;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: rgba(255, 255, 255, 0.7); /* Change text color to white on hover */
-  transition: background-color 0.3s ease; /* Transition for background color */
-  transition: color 0.3, opacity 0.3s ease;
+  color: rgba(255, 255, 255, 0.7);
+  transition: background-color 0.3s ease, color 0.3s ease, opacity 0.3s ease; /* Unified transition */
 }
+
 /* Hover effect for button */
 .btn.sidebar:hover {
-  background-color: #51627d; /* Change to this color on hover */
-  color: rgba(255, 255, 255, 1); /* Change text color to white on hover */
+  color: #51627d; /* Change to this color on hover */
 }
+/* ボタンがアクティブなとき（クリックされたとき）のスタイル */
+.btn.sidebar.display {
+  color: #51627d; /* クリック時の背景色 */
+  transition: background-color 0.3s ease, color 0.3s ease, opacity 0.3s ease; /* Unified transition */
+}
+
 /* Icon and title styles */
 .btn.sidebar div {
-  margin-bottom: 8px; /* Space between icon and title */
+  margin-top: 3px; /* Space between icon and title */
 }
 
 .btn.sidebar p {
   margin: 0;
-  font-size: 8px;
+  font-size: 6px; /* Adjusted font size */
+  margin-bottom: 3px;
+}
+/* Map container and input styles */
+.map-container {
+  position: relative;
+  width: 100%;
+  height: 700px;
+}
+
+.map-input {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+  padding: 8px;
+  font-size: 16px;
+  width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.map-ref {
+  width: 100%;
+  height: 800px;
 }

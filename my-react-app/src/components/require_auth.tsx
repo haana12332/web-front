@@ -1,9 +1,14 @@
 import { Outlet } from "react-router-dom";
+import { useState } from "react";
+
 import { SidebarData } from "./sidebarData";
+import { SlidingPanel } from "@/components/slidingPanel"; // SlidingPanelコンポーネントをインポート
+
 export function RequireAuth(): JSX.Element {
   return (
     <div className="flex">
-      <Sildebar />
+      <Sidebar />
+      <SlidingPanel />
       <div className="flex-1">
         <Outlet />
       </div>
@@ -11,19 +16,23 @@ export function RequireAuth(): JSX.Element {
   );
 }
 
-function Sildebar(): JSX.Element {
-  function handleSidebar() {
-    // Sidebar item click handling logic
+export function Sidebar(): JSX.Element {
+  const [clicked, setClicked] = useState<string>("");
+  function handleDisplayChange(title: string) {
+    console.log(title);
+    setClicked(title);
   }
-
   return (
     <div id="Sidebar">
       <ul>
         {SidebarData.map((value, key) => {
           return (
-            <li key={key} onClick={handleSidebar}>
-              {/* Use a custom button with a CSS class */}
-              <button className="btn sidebar">
+            <li key={key} onClick={() => handleDisplayChange(value.title)}>
+              <button
+                className={`btn sidebar ${
+                  clicked === value.title ? "display" : ""
+                }`}
+              >
                 <div>{value.icon}</div>
                 <p>{value.title}</p>
               </button>
