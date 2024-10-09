@@ -1,24 +1,33 @@
-import * as React from "react";
 import { useState } from "react";
 
-const Search = (props) => {
-  const [text, setText] = useState("");
-  const [addText, setAddText] = useState("");
+// propsの型定義
+interface SearchProps {
+  apikey: string;
+  onGeocodeResult: (position: { lat: number; lng: number }) => void;
+}
 
+export function Search(props: SearchProps) {
+  const [text, setText] = useState<string>("");
+
+  // APIキーとHERE Mapsオブジェクト
   const apikey = props.apikey;
   const H = window.H;
+
   const platform = new H.service.Platform({
     apikey: apikey,
   });
+
   const service = platform.getSearchService();
+
+  // 検索クリック時の処理
   const onClickSearch = () => {
     service.geocode(
       {
         q: text,
-        limit: 1,
+        limit: 10,
       },
-      (result) => {
-        result.items.forEach((item) => {
+      (result: any) => {
+        result.items.forEach((item: any) => {
           console.log(item.position);
           props.onGeocodeResult(item.position);
         });
@@ -35,11 +44,14 @@ const Search = (props) => {
         name="query"
         id="query"
         value={text}
-        onChange={(event) => setText(event.target.value)}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+          setText(event.target.value)
+        }
         placeholder="Search location"
+        className="map-input"
       />
-      <button onClick={onClickSearch}>Search</button>
     </div>
   );
-};
+}
+
 export default Search;

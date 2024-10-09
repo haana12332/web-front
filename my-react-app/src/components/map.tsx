@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import DisplayMap from "@/components/map/displayMap.jsx";
-import Search from "@/components/map/search";
-const apikey = import.meta.env.VITE_API_KEY;
+import { Gps } from "@/type/type";
+
+const apikey: string = import.meta.env.VITE_API_KEY;
 console.log("apikey", apikey);
 
 export function Map() {
-  const [gps, setGps] = useState({
-    lat: "35.6814568602531", // 初期位置
-    lng: "139.76799772026422", // 初期位置
+  const [gps, setGps] = useState<Gps>({
+    lat: 35.6814568602531, // 初期位置
+    lng: 139.76799772026422, // 初期位置
   });
 
   useEffect(() => {
@@ -36,13 +37,10 @@ export function Map() {
       }
     };
   }, []);
+
   return (
     <div>
       <DisplayMap apikey={apikey} gps={gps} />
     </div>
-    //   <div>
-    //     <Search apikey={apikey} onGeocodeResult={(query) => setGps(query)} />
-
-    //   </div>
   );
 }
