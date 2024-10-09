@@ -97,13 +97,26 @@ export function DisplayMap({ apikey, gps }: DisplayMapProps) {
     // マップ上のオブジェクトをクリア
     map.removeObjects(map.getObjects());
 
-    // 新しいマーカーを追加
+    // 検索結果のマーカーを表示
+    shopResult.forEach((result) => {
+      const position = result.position;
+      const iconUrl =
+        "/explore_nearby_24dp_EA3323_FILL0_wght400_GRAD0_opsz24.svg"; // ローカルのアイコン画像パス
+      const icon = new H.map.Icon(iconUrl); // アイコンを指定
+      const searchMarker = new H.map.Marker(
+        { lat: position.lat, lng: position.lng },
+        { icon }
+      );
+      map.addObject(searchMarker); // マーカーをマップに追加
+    });
+
+    // 現在位置のマーカーを追加
     const marker = new H.map.Marker({ lat: gps.lat, lng: gps.lng });
     map.addObject(marker);
 
     // マップの中心を更新
     map.setCenter({ lat: gps.lat, lng: gps.lng });
-  }, [gps]);
+  }, [gps, shopResult]);
 
   return (
     <div className="map-container">

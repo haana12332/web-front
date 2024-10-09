@@ -1,5 +1,6 @@
 import { Gps } from "@/type/type";
 import { SearchResult } from "@/type/type";
+
 declare global {
   interface Window {
     H: any;
@@ -19,11 +20,11 @@ export function shopsearch(
 
     const service = platform.getSearchService();
 
-    // `discover`メソッドを使用して周辺の場所を検索
+    // `discover`メソッドを使用して周辺の場所を1km圏内で検索
     service.discover(
       {
         q: searchtext,
-        at: `${gps.lat},${gps.lng}`,
+        at: `${gps.lat},${gps.lng}`, // 検索の中心位置
         limit: 3,
       },
       (result: any) => {
