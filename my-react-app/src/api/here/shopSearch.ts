@@ -24,8 +24,8 @@ export function shopsearch(
     service.discover(
       {
         q: searchtext,
-        at: `${gps.lat},${gps.lng}`, // 検索の中心位置
         limit: 3,
+        in: `circle:${gps.lat},${gps.lng};r=2000` // 半径の指定 (radiusを利用)
       },
       (result: any) => {
         if (result.items) {

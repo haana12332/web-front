@@ -40,7 +40,7 @@ export function Map() {
 
   return (
     <div>
-      <DisplayMap apikey={apikey} gps={gps} />
+      <DisplayMap apikey={apikey} origin={gps} />
     </div>
   );
 }

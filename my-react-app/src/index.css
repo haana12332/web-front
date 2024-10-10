@@ -72,6 +72,7 @@ body {
   font-size: 6px; /* Adjusted font size */
   margin-bottom: 3px;
 } /* Map container and input styles */
+
 .map-container {
   position: relative;
   width: 100%;
@@ -88,62 +89,8 @@ body {
   width: 300px;
   border: 1px solid rgba(255, 255, 255, 0.5); /* 半透明の白い枠線 */
   border-radius: 4px;
-  background-color: rgba(255, 255, 255, 0.2); /* 背景を半透明にする */
   backdrop-filter: blur(10px); /* 背景をぼかす効果 */
   color: black; /* テキストの色 */
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2); /* 軽い影を追加 */
-}
-
-.map-input::placeholder {
-  color: rgba(0, 0, 0, 0.5); /* プレースホルダーテキストの色を薄くする */
-}
-/* Map container and input styles */
-.map-container {
-  position: relative;
-  width: 100%;
-  height: 100vh; /* 画面の高さ全体を使う */
-}
-
-.map-input {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 10; /* z-indexを高く設定し、マップよりも前面に表示 */
-  padding: 8px;
-  font-size: 16px;
-  width: 300px;
-  border: 1px solid rgba(255, 255, 255, 0.5); /* 半透明の白い枠線 */
-  border-radius: 4px;
-  background-color: rgba(255, 255, 255, 0.2); /* 背景を半透明にする */
-  backdrop-filter: blur(10px); /* 背景をぼかす効果 */
-  color: black; /* テキストの色 */
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2); /* 軽い影を追加 */
-}
-
-.map-input::placeholder {
-  color: rgba(0, 0, 0, 0.5); /* プレースホルダーテキストの色を薄くする */
-}
-/* Map container and input styles */
-.map-container {
-  position: relative;
-  width: 100%;
-  height: 100vh; /* 画面の高さ全体を使う */
-}
-
-.map-input {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 10; /* z-indexを高く設定し、マップよりも前面に表示 */
-  padding: 8px;
-  font-size: 16px;
-  width: 300px;
-  border: 1px solid rgba(255, 255, 255, 0.5); /* 半透明の白い枠線 */
-  border-radius: 4px;
-  background-color: rgba(255, 255, 255, 0.2); /* 背景を半透明にする */
-  backdrop-filter: blur(10px); /* 背景をぼかす効果 */
-  color: black; /* テキストの色 */
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2); /* 軽い影を追加 */
 }
 
 .map-input::placeholder {
@@ -166,7 +113,9 @@ body {
 .shop-result-item {
   margin-bottom: 10px;
 }
-
+.shop-result-item:hover{
+  color:#51627d
+}
 .map-ref {
   width: 100%;
   height: 100vh; /* 画面の高さ全体を使う */

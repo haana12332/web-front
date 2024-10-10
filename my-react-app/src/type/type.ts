@@ -12,3 +12,8 @@ export type SearchResult = {
   distance: number;
   position: Gps;
 };
+
+export type RouteSearch = {
+  apikey:string;
+  
+}
