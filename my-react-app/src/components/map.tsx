@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import DisplayMap from "@/components/map/displayMap.jsx";
 import { Gps } from "@/type/type";
+// import { GpsContext } from "./context/gpsdata";
 
 const apikey: string = import.meta.env.VITE_API_KEY;
 console.log("apikey", apikey);
 
 export function Map() {
+  // const gpsContext = useContext(GpsContext); // gpsContext全体を取得
   const [gps, setGps] = useState<Gps>({
     lat: 35.6814568602531, // 初期位置
     lng: 139.76799772026422, // 初期位置
@@ -17,8 +19,14 @@ export function Map() {
       (position) => {
         const { latitude, longitude } = position.coords;
         console.log("Updated Position:", latitude, longitude);
-        // 位置が変わったら地図のGPSを更新
-        setGps({ lat: latitude, lng: longitude });
+        // 位置が変わったらstateのGPSを更新
+        const newGps = { lat: latitude, lng: longitude };
+        setGps(newGps);
+        // gpsContextが存在する場合にのみ更新を行う
+        // if (gpsContext && gpsContext.setGpsDate) {
+        //   console.log(newGps);
+        //   gpsContext.setGpsDate(newGps);
+        // }
       },
       (error) => {
         console.error("Error retrieving location:", error);
@@ -36,7 +44,7 @@ export function Map() {
         navigator.geolocation.clearWatch(watchId);
       }
     };
-  }, []);
+  }, []); // gpsContextを依存配列に追加
 
   return (
     <div>

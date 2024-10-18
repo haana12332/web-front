@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect, useState, useRef } from "react";
 import { Gps } from "@/type/type";
 import { shopsearch } from "@/api/here/shopSearch";
 import { routeSearch } from "@/api/here/routeSearch"; // ルート検索関数をインポート
@@ -16,12 +16,12 @@ declare global {
 }
 
 export function DisplayMap({ apikey, origin }: DisplayMapProps) {
-  const mapRef = React.useRef<HTMLDivElement | null>(null);
-  const mapInstanceRef = React.useRef<any>(null);
-  const [shopResult, setShopResult] = React.useState<SearchResult[]>([]);
-  const [searchText, setSearchText] = React.useState(""); // 検索ボックスの入力状態を管理
-  const [routeLine, setRouteLine] = React.useState<any>(null); // ルートラインの状態を管理
-  const [destination, setDestination] = React.useState<Gps | null>(null);
+  const mapRef = useRef<HTMLDivElement | null>(null);
+  const mapInstanceRef = useRef<any>(null);
+  const currentPositionMarkerRef = useRef<any>(null); // 現在位置マーカーの参照
+  const [shopResult, setShopResult] = useState<SearchResult[]>([]);
+  const [searchText, setSearchText] = useState(""); // 検索ボックスの入力状態を管理
+  const [destination, setDestination] = useState<Gps | null>(null);
 
   // 近くの店を探す
   const handleChangeShops = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,7 +35,11 @@ export function DisplayMap({ apikey, origin }: DisplayMapProps) {
 
     const fetchShops = async () => {
       try {
-        const result: SearchResult[] = await shopsearch(apikey, searchText, origin);
+        const result: SearchResult[] = await shopsearch(
+          apikey,
+          searchText,
+          origin
+        );
         setShopResult(result); // 結果をステートに保存
       } catch (error) {
         console.error("Error fetching shop results:", error);
@@ -52,7 +56,7 @@ export function DisplayMap({ apikey, origin }: DisplayMapProps) {
   };
 
   // 初期化: マップの描画を行う
-  React.useLayoutEffect(() => {
+  useEffect(() => {
     if (!mapRef.current) {
       console.error("mapRef.current is not initialized");
       return;
@@ -87,26 +91,49 @@ export function DisplayMap({ apikey, origin }: DisplayMapProps) {
 
     mapInstanceRef.current = map;
 
+    // 現在位置のマーカーを初期化
+    const marker = new H.map.Marker({ lat: origin.lat, lng: origin.lng });
+    map.addObject(marker);
+    currentPositionMarkerRef.current = marker;
+
     return () => {
       window.removeEventListener("resize", handleResize);
       map.dispose();
     };
-  }, [apikey, origin.lat, origin.lng]);
+  }, [apikey]);
+
+  // 現在位置マーカーの更新
+  useEffect(() => {
+    if (!mapInstanceRef.current || !currentPositionMarkerRef.current) return;
+
+    const map = mapInstanceRef.current;
+    const currentPositionMarker = currentPositionMarkerRef.current;
+
+    // 現在位置のマーカーを更新
+    currentPositionMarker.setGeometry({ lat: origin.lat, lng: origin.lng });
+
+    // マップの中心も更新
+    map.setCenter({ lat: origin.lat, lng: origin.lng });
+  }, [origin]);
 
   // ルートラインとショップの表示を管理するuseEffect
-  React.useEffect(() => {
+  useEffect(() => {
     if (!mapInstanceRef.current) return;
 
     const H = window.H;
     const map = mapInstanceRef.current;
 
-    // マップ上のオブジェクトをクリア
-    map.removeObjects(map.getObjects());
+    // マップ上のオブジェクトをクリア（現在位置マーカーは除く）
+    const objectsToRemove = map
+      .getObjects()
+      .filter((obj: any) => obj !== currentPositionMarkerRef.current);
+    map.removeObjects(objectsToRemove);
 
     // 検索結果のマーカーを表示
     shopResult.forEach((result) => {
       const position = result.position;
-      const iconUrl = "/explore_nearby_24dp_EA3323_FILL0_wght400_GRAD0_opsz24.svg"; // ローカルのアイコン画像パス
+      const iconUrl =
+        "/explore_nearby_24dp_EA3323_FILL0_wght400_GRAD0_opsz24.svg"; // ローカルのアイコン画像パス
       const icon = new H.map.Icon(iconUrl); // アイコンを指定
       const searchMarker = new H.map.Marker(
         { lat: position.lat, lng: position.lng },
@@ -115,26 +142,22 @@ export function DisplayMap({ apikey, origin }: DisplayMapProps) {
       map.addObject(searchMarker); // マーカーをマップに追加
     });
 
-    // 現在位置のマーカーを追加
-    const marker = new H.map.Marker({ lat: origin.lat, lng: origin.lng });
-    map.addObject(marker);
-
     // ルート検索を行う
     const searchRoute = async () => {
       if (origin && destination) {
         try {
-          const route = await routeSearch(apikey, origin, destination); // `routeSearch`関数を使う
-          console.log("Routing result:", route); // レスポンス全体を確認
-
-          // ルートが存在し、ポリラインが定義されているか確認
+          const route = await routeSearch(apikey, origin, destination);
           if (route && route.polyline) {
-            const linestring = H.geo.LineString.fromFlexiblePolyline(route.polyline);
+            const linestring = H.geo.LineString.fromFlexiblePolyline(
+              route.polyline
+            );
             const newRouteLine = new H.map.Polyline(linestring, {
               style: { strokeColor: "blue", lineWidth: 3 },
             });
             map.addObjects([newRouteLine]);
-            map.getViewModel().setLookAtData({ bounds: newRouteLine.getBoundingBox() });
-            setRouteLine(newRouteLine); // 新しいルートラインを設定
+            map
+              .getViewModel()
+              .setLookAtData({ bounds: newRouteLine.getBoundingBox() });
           } else {
             console.error("Route polyline is missing");
           }
@@ -145,10 +168,7 @@ export function DisplayMap({ apikey, origin }: DisplayMapProps) {
     };
 
     searchRoute(); // ルート検索を実行
-
-    // マップの中心を更新
-    map.setCenter({ lat: origin.lat, lng: origin.lng });
-  }, [apikey, origin, shopResult, destination]);
+  }, [shopResult, destination]);
 
   return (
     <div className="map-container">
@@ -161,7 +181,11 @@ export function DisplayMap({ apikey, origin }: DisplayMapProps) {
       {searchText.trim() !== "" && shopResult.length > 0 && (
         <div className="shop-results">
           {shopResult.map((result, index) => (
-            <div onClick={() => handleSearchRoute(index)} key={index} className="shop-result-item">
+            <div
+              onClick={() => handleSearchRoute(index)}
+              key={index}
+              className="shop-result-item"
+            >
               <h3>{result.title}</h3>
               <p>
                 Position: {result.position.lat}, {result.position.lng}

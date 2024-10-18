@@ -6,6 +6,6 @@ services:
     ports:
       - "4500:4500"
     volumes:
-      - ./my-react-app:/app # ここがリスト形式
+      - ./my-react-app:/app
       - /app/node_modules
     command: npm run dev
